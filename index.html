@@ -143,7 +143,21 @@
         let shouldResetDisplay = false;
 
         function updateDisplay() {
-            display.value = currentValue;
+            let displayText = currentValue;
+            if (operation && previousValue && !shouldResetDisplay) {
+                displayText = previousValue + ' ' + getOperatorSymbol(operation) + ' ' + currentValue;
+            } else if (operation && previousValue) {
+                displayText = previousValue + ' ' + getOperatorSymbol(operation);
+            }
+            display.value = displayText;
+        }
+
+        function getOperatorSymbol(op) {
+            switch(op) {
+                case '*': return '×';
+                case '/': return '÷';
+                default: return op;
+            }
         }
 
         function appendNumber(num) {
@@ -169,6 +183,7 @@
             previousValue = currentValue;
             operation = op;
             shouldResetDisplay = true;
+            updateDisplay();
         }
 
         function calculate() {
